@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="SkQTBEUjRojJ8SLDm3ygXSs-9rmOVR6Y9YWwkGBpBfY" />
+
+    <title>AK Charitable Organization</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+</head>
+<body>
+
+    <header>
+        <img src="img/Logo.png" alt="AK Charitable Organization Logo">
+        <h1>AK Charitable Organization</h1>
+    </header>
+
+    <section class="about animate-on-scroll">
+        <h2>About the Project</h2>
+        <p>
+            This platform collects a 1€ monthly donation from each member 
+            and distributes the total amount to a different charitable 
+            organization every month. Together, we can make a big difference 
+            with small contributions.
+        </p>
+    </section>
+
+    <!-- Impact Gallery Section -->
+    <section class="impact-gallery animate-on-scroll">
+        <h2 class="gradient-text">Your Impact in Action</h2>
+        <p class="gallery-subtitle typewriter">See how your donations are making a real difference around the world</p>
+        
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="img/charity_images/4piWPRzA6pKb.jpg" alt="Children receiving help">
+                <div class="gallery-overlay">
+                    <div class="overlay-content">
+                        <h3>Supporting Children</h3>
+                        <p>Providing essential care and education to children in need</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gallery-item">
+                <img src="img/charity_images/9Gerxqhw8AXw.jpg" alt="Food distribution">
+                <div class="gallery-overlay">
+                    <div class="overlay-content">
+                        <h3>Fighting Hunger</h3>
+                        <p>Delivering nutritious meals to families facing food insecurity</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gallery-item">
+                <img src="img/charity_images/5H0zE0bM40vg.jpg" alt="Medical assistance">
+                <div class="gallery-overlay">
+                    <div class="overlay-content">
+                        <h3>Healthcare Access</h3>
+                        <p>Bringing medical care to underserved communities</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gallery-item">
+                <img src="img/charity_images/8QQohQruWUaV.jpg" alt="Community volunteers">
+                <div class="gallery-overlay">
+                    <div class="overlay-content">
+                        <h3>Community Support</h3>
+                        <p>Volunteers working together to strengthen communities</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="impact-stats animate-on-scroll">
+            <div class="stat-card enhanced-hover" data-tooltip="People who received direct help through our donations">
+                <div class="stat-number">50,000</div>
+                <div class="stat-label">Lives Touched</div>
+            </div>
+            <div class="stat-card enhanced-hover" data-tooltip="Countries where our donations have made an impact">
+                <div class="stat-number">25</div>
+                <div class="stat-label">Countries Reached</div>
+            </div>
+            <div class="stat-card enhanced-hover" data-tooltip="Total amount donated by our community members">
+                <div class="stat-number">180,000</div>
+                <div class="stat-label">Total Donated</div>
+            </div>
+            <div class="stat-card enhanced-hover pulse" data-tooltip="Active monthly donors in our community">
+                <div class="stat-number">15,000</div>
+                <div class="stat-label">Active Members</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="actions">
+        <a href="singup.html">Sign Up</a>
+        <a href="login.html">Login</a>
+    </div>
+
+    <!-- Google Sign In Button -->
+    <div class="google-signin-container">
+        <div id="g_id_onload"
+             data-client_id="38666609305-50lf5q30atltt9ocd48tshug33iavql.apps.googleusercontent.com"
+             data-auto_prompt="false"
+             data-callback="handleCredentialResponse">
+        </div>
+
+        <div class="g_id_signin"
+             data-type="standard"
+             data-shape="rectangular"
+             data-theme="filled_blue"
+             data-text="signin_with"
+             data-size="large"
+             data-logo_alignment="left">
+        </div>
+    </div>
+
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+            // هنا تبعت الـ JWT للباك اند للتحقق وإنشاء حساب أو تسجيل الدخول
+            // مثال: 
+            // fetch('/login-google', {
+            //   method: 'POST',
+            //   headers: { 'Content-Type': 'application/json' },
+            //   body: JSON.stringify({ token: response.credential })
+            // });
+        }
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "38666609305-50lf5q30atltt9ocd48tshug33iavql.apps.googleusercontent.com",
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.querySelector(".g_id_signin"),
+                { theme: "filled_blue", size: "large", text: "signin_with" }
+            );
+        }
+    <script src="enhanced-interactions.js"></script>
+</body>
+</html>

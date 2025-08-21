@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AK Charitable Organization</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R&vault=true&intent=subscription&currency=EUR"></script>
+    <!-- Stripe SDK -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="img/Logo.png" alt="AK Logo" class="nav-logo">
+                <span class="nav-title">AK Charitable</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link active">Dashboard</a>
+                <a href="#" class="nav-link">Profile</a>
+                <a href="#" class="nav-link">History</a>
+                <a href="ak.html" class="nav-link logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard Content -->
+    <main class="dashboard">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <div class="welcome-card">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="welcome-text">
+                    <h1>Welcome back, <span id="userName">John Doe</span>!</h1>
+                    <p>Thank you for being part of our charitable community</p>
+                </div>
+                <div class="welcome-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">12</span>
+                        <span class="stat-label">Months Active</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">€12</span>
+                        <span class="stat-label">Total Donated</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Subscription Status Card -->
+            <div class="dashboard-card subscription-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-heart"></i> Subscription Status</h2>
+                    <span class="status-badge active">Active</span>
+                </div>
+                <div class="card-content">
+                    <div class="subscription-info">
+                        <div class="amount">€1.00 / month</div>
+                        <div class="next-payment">Next payment: January 15, 2025</div>
+                        <div class="beneficiary">
+                            <strong>Current Beneficiary:</strong>
+                            <span>Red Cross International</span>
+                        </div>
+                    </div>
+                    <div class="subscription-actions">
+                        <button class="btn btn-secondary" onclick="pauseSubscription()">
+                            <i class="fas fa-pause"></i> Pause
+                        </button>
+                        <button class="btn btn-danger" onclick="cancelSubscription()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Methods Card -->
+            <div class="dashboard-card payment-methods-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-credit-card"></i> Payment Methods</h2>
+                    <button class="btn btn-primary btn-sm" onclick="showAddPaymentModal()">
+                        <i class="fas fa-plus"></i> Add New
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div class="payment-method active" data-method="paypal">
+                        <div class="method-info">
+                            <i class="fab fa-paypal"></i>
+                            <span>PayPal Account</span>
+                        </div>
+                        <div class="method-status">
+                            <span class="status-badge active">Primary</span>
+                        </div>
+                    </div>
+                    <div class="payment-method" data-method="stripe">
+                        <div class="method-info">
+                            <i class="fas fa-credit-card"></i>
+                            <span>**** **** **** 1234</span>
+                        </div>
+                        <div class="method-actions">
+                            <button class="btn btn-link" onclick="setAsPrimary('stripe')">Set as Primary</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="dashboard-card quick-actions-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                </div>
+                <div class="card-content">
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="makeOneTimeDonation()">
+                            <i class="fas fa-hand-holding-heart"></i>
+                            <span>One-time Donation</span>
+                        </button>
+                        <button class="action-btn" onclick="updateAmount()">
+                            <i class="fas fa-edit"></i>
+                            <span>Update Amount</span>
+                        </button>
+                        <button class="action-btn" onclick="shareWithFriends()">
+                            <i class="fas fa-share"></i>
+                            <span>Share with Friends</span>
+                        </button>
+                        <button class="action-btn" onclick="downloadReceipts()">
+                            <i class="fas fa-download"></i>
+                            <span>Download Receipts</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Donations Card -->
+            <div class="dashboard-card donations-history-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-history"></i> Recent Donations</h2>
+                    <button class="btn btn-link" onclick="viewAllHistory()">View All</button>
+                </div>
+                <div class="card-content">
+                    <div class="donation-item">
+                        <div class="donation-info">
+                            <div class="donation-recipient">UNICEF</div>
+                            <div class="donation-date">December 15, 2024</div>
+                        </div>
+                        <div class="donation-amount">€1.00</div>
+                    </div>
+                    <div class="donation-item">
+                        <div class="donation-info">
+                            <div class="donation-recipient">Doctors Without Borders</div>
+                            <div class="donation-date">November 15, 2024</div>
+                        </div>
+                        <div class="donation-amount">€1.00</div>
+                    </div>
+                    <div class="donation-item">
+                        <div class="donation-info">
+                            <div class="donation-recipient">World Food Programme</div>
+                            <div class="donation-date">October 15, 2024</div>
+                        </div>
+                        <div class="donation-amount">€1.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Statistics Card -->
+            <div class="dashboard-card impact-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-line"></i> Your Impact</h2>
+                </div>
+                <div class="card-content">
+                    <div class="impact-stats">
+                        <div class="impact-item">
+                            <div class="impact-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="impact-details">
+                                <div class="impact-number">2,847</div>
+                                <div class="impact-label">People Helped</div>
+                            </div>
+                        </div>
+                        <div class="impact-item">
+                            <div class="impact-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="impact-details">
+                                <div class="impact-number">15</div>
+                                <div class="impact-label">Countries Reached</div>
+                            </div>
+                        </div>
+                        <div class="impact-item">
+                            <div class="impact-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="impact-details">
+                                <div class="impact-number">8</div>
+                                <div class="impact-label">Organizations Supported</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Beneficiary Card -->
+            <div class="dashboard-card upcoming-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-calendar-alt"></i> Next Month's Beneficiary</h2>
+                </div>
+                <div class="card-content">
+                    <div class="beneficiary-preview">
+                        <div class="beneficiary-image">
+                            <img src="img/charity_images/EwFqzMkz8J4k.jpg" alt="World Wildlife Fund work">
+                        </div>
+                        <div class="beneficiary-info">
+                            <h3>World Wildlife Fund</h3>
+                            <p>Protecting endangered species and their habitats worldwide</p>
+                            <div class="vote-section">
+                                <span>Community voted: <strong>78% approval</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Impact Card -->
+            <div class="dashboard-card recent-impact-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-images"></i> Recent Impact Stories</h2>
+                </div>
+                <div class="card-content">
+                    <div class="impact-stories">
+                        <div class="story-item">
+                            <div class="story-image">
+                                <img src="img/charity_images/JolkSL3IbgKL.jpg" alt="Humanitarian aid delivery">
+                            </div>
+                            <div class="story-content">
+                                <h4>Emergency Relief Delivered</h4>
+                                <p>Your donations helped deliver critical supplies to families in crisis zones.</p>
+                                <span class="story-date">2 days ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="story-item">
+                            <div class="story-image">
+                                <img src="img/charity_images/f9X4391OZjmN.jpg" alt="Volunteer programs">
+                            </div>
+                            <div class="story-content">
+                                <h4>New Volunteer Program</h4>
+                                <p>Community volunteers are making a difference in local education initiatives.</p>
+                                <span class="story-date">1 week ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Community Impact Banner -->
+        <section class="community-impact-banner">
+            <div class="banner-content">
+                <div class="banner-text">
+                    <h2>Together, We're Changing Lives</h2>
+                    <p>Every €1 donation creates a ripple effect of positive change across communities worldwide</p>
+                </div>
+                <div class="banner-images">
+                    <div class="banner-image-item">
+                        <img src="img/charity_images/qeewM7FFTGPo.jpg" alt="Charitable giving impact">
+                    </div>
+                    <div class="banner-image-item">
+                        <img src="img/charity_images/8QQohQruWUaV.jpg" alt="Community volunteers">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add Payment Method Modal -->
+    <div id="addPaymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Payment Method</h3>
+                <button class="modal-close" onclick="closeAddPaymentModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-options">
+                    <div class="payment-option" onclick="setupPayPal()">
+                        <i class="fab fa-paypal"></i>
+                        <span>PayPal</span>
+                        <p>Quick and secure payments</p>
+                    </div>
+                    <div class="payment-option" onclick="setupStripe()">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Credit/Debit Card</span>
+                        <p>Visa, Mastercard, and more</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PayPal Container -->
+    <div id="paypal-button-container" style="display: none;"></div>
+
+    <!-- Stripe Container -->
+    <div id="stripe-card-element" style="display: none;"></div>
+
+    <script src="dashboard.js"></script>
+    <script src="enhanced-interactions.js"></script>
+</body>
+</html>
+
